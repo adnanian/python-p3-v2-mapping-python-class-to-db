@@ -50,4 +50,31 @@ class Department:
         CONN.commit()
         
         self.id = CURSOR.lastrowid
+    
+    def update(self):
+        """Update the table row corresponding to the current Department instance. """
+        sql = """
+            UPDATE departments
+            SET name = ?, location = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.name, self.location, self.id))
+        CONN.commit()
+        
+    def delete(self):
+        """Delete the table row corresponding to the current Department instance"""
+        sql = """
+            DELETE FROM departments
+            WHERE id = ?
+        """
+        
+        CURSOR.execute(sql, (self.id,))
+        CONN.commit()
+        
+    @classmethod
+    def create(cls, name, location):
+        """ Initialize a new Department instance and save the object to the database """
+        department = cls(name, location)
+        department.save()
+        return department
         
